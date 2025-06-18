@@ -54,4 +54,11 @@ struct Movie: Codable, Identifiable {
     let poster_path: String?
     let release_date: String
     let vote_average: Double
+    
+    var posterURL: URL? {
+        if let path = poster_path {
+            return URL(string: "https://image.tmdb.org/t/p/w500\(path)")
+        }
+        return nil
+    }
 }

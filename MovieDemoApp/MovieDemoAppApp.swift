@@ -6,12 +6,24 @@
 //
 
 import SwiftUI
+import SwiftData
+
 
 @main
 struct MovieDemoAppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
-        }
+            TabView {
+                ContentView()
+                    .tabItem {
+                        Label("Movies", systemImage: "film")
+                    }
+                FavoritesView()
+                    .tabItem {
+                        Label("Favorites", systemImage: "heart.fill")
+                    }
+                }
+            }
+            .modelContainer(for: MovieModel.self)
     }
 }
