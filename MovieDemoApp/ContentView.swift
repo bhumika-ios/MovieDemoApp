@@ -42,7 +42,9 @@ struct ContentView: View {
 
                                     Text(movie.title)
                                         .font(.headline)
-                                        .lineLimit(1)
+                                        .lineLimit(2) // or use nil for unlimited lines
+                                        .multilineTextAlignment(.leading)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
                                         .padding(.top, 4)
 
                                     Text("⭐️ \(movie.vote_average, specifier: "%.1f")")
