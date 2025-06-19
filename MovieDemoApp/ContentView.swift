@@ -51,9 +51,12 @@ struct ContentView: View {
                                         .font(.subheadline)
                                         .foregroundColor(.secondary)
                                 }
+                                .accessibilityIdentifier("MovieCell_\(movie.id)")
                             }
+                          
                         }
                     }
+//                    .accessibilityIdentifier("MovieGridCell")
                     .padding()
                 }
                 .searchable(text: $searchText)

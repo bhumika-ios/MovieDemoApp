@@ -9,33 +9,52 @@ import XCTest
 
 final class MovieDemoAppUITests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    var app: XCUIApplication!
 
-        // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = false
+      override func setUpWithError() throws {
+          continueAfterFailure = false
+          app = XCUIApplication()
+          app.launch()
+      }
 
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+    func testMovieGridLoads() {
+        let imageElements = app.scrollViews.images
+        XCTAssertTrue(imageElements.count > 0, "At least one poster image should appear")
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+    func testAddAndRemoveFromFavoritesFlow() {
+           // Tap the first visible movie poster
+           let firstPoster = app.scrollViews.images.firstMatch
+           XCTAssertTrue(firstPoster.waitForExistence(timeout: 10), "Poster image should appear")
+           firstPoster.tap()
 
-    @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
+           // Tap "Add to Favorites" if it appears
+           let addButton = app.buttons["AddToFavorites"]
+           XCTAssertTrue(addButton.waitForExistence(timeout: 5), "Add to Favorites button should appear")
+           addButton.tap()
 
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+           // Navigate back to the movie grid
+           let backButton = app.navigationBars.buttons.firstMatch
+           XCTAssertTrue(backButton.waitForExistence(timeout: 5), "Back button should appear")
+           backButton.tap()
 
-    @MainActor
-    func testLaunchPerformance() throws {
-        // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
-            XCUIApplication().launch()
-        }
-    }
+           // Go to Favorites tab
+           app.tabBars.buttons["Favorites"].tap()
+
+           // Tap on the first favorite movie poster
+          let favoriteCell = app.collectionViews.cells.firstMatch
+          XCTAssertTrue(favoriteCell.waitForExistence(timeout: 10), "Favorite cell should appear")
+          favoriteCell.tap()
+        
+           // Tap "Remove from Favorites"
+           let removeButton = app.buttons["RemoveFromFavorites"]
+           XCTAssertTrue(removeButton.waitForExistence(timeout: 5), "Remove from Favorites button should appear")
+           removeButton.tap()
+
+           // Go back again
+           XCTAssertTrue(backButton.waitForExistence(timeout: 5), "Back button should appear")
+           backButton.tap()
+
+       }
+
 }

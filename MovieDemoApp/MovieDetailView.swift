@@ -43,6 +43,7 @@ struct MovieDetailView: View {
                         .foregroundStyle(.white)
                         .cornerRadius(10)
                 }
+                .accessibilityIdentifier(isFavorite ? "RemoveFromFavorites" : "AddToFavorites")
             }
             .padding()
         }
